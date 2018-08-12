@@ -1,6 +1,6 @@
 import argparse
 import template
-
+import datetime
 parser = argparse.ArgumentParser(description='EDSR and MDSR')
 
 parser.add_argument('--debug', action='store_true',
@@ -9,7 +9,7 @@ parser.add_argument('--template', default='.',
                     help='You can set various templates in option.py')
 
 # Hardware specifications
-parser.add_argument('--n_threads', type=int, default=8,
+parser.add_argument('--n_threads', type=int, default=6,
                     help='number of threads for data loading')
 parser.add_argument('--cpu', action='store_true',
                     help='use cpu only')
@@ -25,7 +25,7 @@ parser.add_argument('--dir_demo', type=str, default='../test',
                     help='demo image directory')
 parser.add_argument('--data_train', type=str, default='DIV2K',
                     help='train dataset name')
-parser.add_argument('--data_test', type=str, default='DIV2K',
+parser.add_argument('--data_test', type=str, default='Set14',
                     help='test dataset name')
 parser.add_argument('--data_range', type=str, default='1-850/851-900',
                     help='train/test data range')
@@ -145,6 +145,8 @@ parser.add_argument('--save_results', action='store_true',
                     help='save output results')
 
 args = parser.parse_args()
+
+args.save=str(datetime.datetime.now()).strip()[:-7].replace(" ", "_")
 template.set_template(args)
 
 args.scale = list(map(lambda x: int(x), args.scale.split('+')))

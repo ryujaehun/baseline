@@ -124,7 +124,7 @@ class checkpoint():
         for v, p in zip(save_list, postfix):
             normalized = v[0].data.mul(255 / self.args.rgb_range)
             ndarr = normalized.byte().permute(1, 2, 0).cpu().numpy()
-            
+
             if self.args.n_colors is 1:
                 import skimage
                 ndarr=skimage.color.gray2rgb(ndarr[:,:,0])
@@ -156,6 +156,10 @@ def calc_psnr(sr, hr, scale, rgb_range, benchmark=False):
 
 def make_optimizer(args, my_model):
     trainable = filter(lambda x: x.requires_grad, my_model.parameters())
+    num_params = sum([np.prod(p.size()) for p in filter(lambda x: x.requires_grad, my_model.parameters())])
+    print('num of parameters: ' + str(num_params)+'\n')
+    with open('../experiment/' + args.save + '/num_of_parameters.txt', 'a') as f:
+        f.write('num of parameters: ' + str(num_params)+'\n')
 
     if args.optimizer == 'SGD':
         optimizer_function = optim.SGD
