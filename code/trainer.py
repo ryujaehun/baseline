@@ -107,6 +107,7 @@ class Trainer():
                     if self.args.save_results:
                         self.ckp.save_results(filename, save_list, scale)
 
+                print(self.loader_test)
                 self.ckp.log[-1, idx_scale] = eval_acc / len(self.loader_test)
                 best = self.ckp.log.max(0)
                 self.ckp.write_log(
@@ -130,7 +131,7 @@ class Trainer():
         def _prepare(tensor):
             if self.args.precision == 'half': tensor = tensor.half()
             return tensor.to(device)
-           
+
         return [_prepare(a) for a in args]
 
     def terminate(self):
@@ -140,4 +141,3 @@ class Trainer():
         else:
             epoch = self.scheduler.last_epoch + 1
             return epoch >= self.args.epochs
-

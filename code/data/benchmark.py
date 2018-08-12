@@ -16,7 +16,9 @@ class Benchmark(srdata.SRData):
 
     def _set_filesystem(self, dir_data):
         self.apath = os.path.join(dir_data, 'benchmark', self.name)
+        print(self.apath)
+        print(self.name)
         self.dir_hr = os.path.join(self.apath, 'HR')
+        print(self.dir_hr)
         self.dir_lr = os.path.join(self.apath, 'LR_bicubic')
         self.ext = ('', '.png')
-

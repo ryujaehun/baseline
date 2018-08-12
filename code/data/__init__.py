@@ -19,7 +19,7 @@ class Data:
 
         if args.data_test in ['Set5', 'Set14', 'B100', 'Urban100']:
             module_test = import_module('data.benchmark')
-            testset = getattr(module_test, 'Benchmark')(args, train=False)
+            testset = getattr(module_test, 'Benchmark')(args, name=args.data_test,train=False)
         else:
             module_test = import_module('data.' +  args.data_test.lower())
             testset = getattr(module_test, args.data_test)(args, train=False)
@@ -31,4 +31,3 @@ class Data:
             shuffle=False,
             pin_memory=not args.cpu
         )
-

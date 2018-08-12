@@ -1,29 +1,5 @@
 # EDSR-PyTorch
-![](/figs/main.png)
 
-This repository is an official PyTorch implementation of the paper **"Enhanced Deep Residual Networks for Single Image Super-Resolution"** from **CVPRW 2017, 2nd NTIRE**.
-You can find the original code and more information from [here](https://github.com/LimBee/NTIRE2017).
-
-If you find our work useful in your research or publication, please cite our work:
-
-[1] Bee Lim, Sanghyun Son, Heewon Kim, Seungjun Nah, and Kyoung Mu Lee, **"Enhanced Deep Residual Networks for Single Image Super-Resolution,"** <i>2nd NTIRE: New Trends in Image Restoration and Enhancement workshop and challenge on image super-resolution in conjunction with **CVPR 2017**. </i> [[PDF](http://openaccess.thecvf.com/content_cvpr_2017_workshops/w12/papers/Lim_Enhanced_Deep_Residual_CVPR_2017_paper.pdf)] [[arXiv](https://arxiv.org/abs/1707.02921)] [[Slide](https://cv.snu.ac.kr/research/EDSR/Presentation_v3(release).pptx)]
-```
-@InProceedings{Lim_2017_CVPR_Workshops,
-  author = {Lim, Bee and Son, Sanghyun and Kim, Heewon and Nah, Seungjun and Lee, Kyoung Mu},
-  title = {Enhanced Deep Residual Networks for Single Image Super-Resolution},
-  booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops},
-  month = {July},
-  year = {2017}
-}
-```
-We provide scripts for reproducing all the results from our paper. You can train your own model from scratch, or use pre-trained model to enlarge your images.
-
-**Differences between Torch version**
-* Codes are much more compact. (Removed all unnecessary parts.)
-* Models are smaller. (About half.)
-* Slightly better performances.
-* Training and evaluation requires less memory.
-* Python-based.
 
 ## Dependencies
 * Python (Tested with 3.6)
@@ -127,7 +103,7 @@ sh demo.sh
 
 * Feb 23, 2018
   * Now PyTorch 0.3.1 is default. Use legacy/0.3.0 branch if you use the old version.
-   
+
   * With a new ``code/data/DIV2K.py`` code, one can easily create new data class for super-resolution.
   * New binary data pack. (Please remove the ``DIV2K_decoded`` folder from your dataset if you have.)
   * With ``--ext bin``, this code will automatically generates and saves the binary data pack that corresponds to previous ``DIV2K_decoded``. (This requires huge RAM (~45GB, Swap can be used.), so please be careful.)
