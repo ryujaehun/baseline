@@ -107,7 +107,7 @@ class Trainer():
                     if self.args.save_results:
                         self.ckp.save_results(filename, save_list, scale)
 
-                print(self.loader_test)
+    
                 self.ckp.log[-1, idx_scale] = eval_acc / len(self.loader_test)
                 best = self.ckp.log.max(0)
                 self.ckp.write_log(

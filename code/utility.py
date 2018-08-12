@@ -124,6 +124,11 @@ class checkpoint():
         for v, p in zip(save_list, postfix):
             normalized = v[0].data.mul(255 / self.args.rgb_range)
             ndarr = normalized.byte().permute(1, 2, 0).cpu().numpy()
+            
+            if self.args.n_colors is 1:
+                import skimage
+                ndarr=skimage.color.gray2rgb(ndarr[:,:,0])
+
             misc.imsave('{}{}.png'.format(filename, p), ndarr)
 
 def quantize(img, rgb_range):
@@ -167,7 +172,7 @@ def make_optimizer(args, my_model):
 
     kwargs['lr'] = args.lr
     kwargs['weight_decay'] = args.weight_decay
-    
+
     return optimizer_function(trainable, **kwargs)
 
 def make_scheduler(args, my_optimizer):
@@ -188,4 +193,3 @@ def make_scheduler(args, my_optimizer):
         )
 
     return scheduler
-

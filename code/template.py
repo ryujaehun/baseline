@@ -1,3 +1,4 @@
+
 def set_template(args):
     # Set the templates here
     if args.template.find('jpeg') >= 0:
@@ -43,4 +44,3 @@ def set_template(args):
         args.n_resblocks = 20
         args.n_feats = 64
         args.chop = True
-
