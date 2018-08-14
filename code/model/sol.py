@@ -12,9 +12,9 @@ class SOL(nn.Module):
         self.conv1 = nn.Conv2d(3, 32, (3, 3), (1, 1), (1, 1))
         self.convdepthwise2=nn.Conv2d(in_channels=32,out_channels=32,groups=32,kernel_size=(3,3),stride=1,padding=(1,1),bias=False)
         self.convpointwise2=nn.Conv2d(in_channels=32,out_channels=32,kernel_size=1,stride=1,padding=0,bias=False)
-        self.convdepthwise3=nn.Conv2d(in_channels=32,out_channels=32,groups=32,kernel_size=(5,1),stride=1,padding=(2,0),bias=False)
+        self.convdepthwise3=nn.Conv2d(in_channels=32,out_channels=32,groups=32,kernel_size=(3,3),stride=1,padding=(1,1),bias=False)
         self.convpointwise3=nn.Conv2d(in_channels=32,out_channels=32,kernel_size=1,stride=1,padding=0,bias=False)
-        self.convdepthwise4=nn.Conv2d(in_channels=32,out_channels=32,groups=32,kernel_size=(5,1),stride=1,padding=(2,0),bias=False)
+        self.convdepthwise4=nn.Conv2d(in_channels=32,out_channels=32,groups=32,kernel_size=(3,3),stride=1,padding=(1,1),bias=False)
         self.convpointwise4=nn.Conv2d(in_channels=32,out_channels=32,kernel_size=1,stride=1,padding=0,bias=False)
         self.convdepthwise5=nn.Conv2d(in_channels=32,out_channels=32,groups=32,kernel_size=(3,3),stride=1,padding=1,bias=False)
         self.convpointwise5=nn.Conv2d(in_channels=32,out_channels=args.n_colors*args.scale[0] ** 2,kernel_size=1,stride=1,padding=0,bias=False)
@@ -28,7 +28,8 @@ class SOL(nn.Module):
         x = self.relu(self.convpointwise3(self.convdepthwise3(x)))
         x = self.relu(self.convpointwise4(self.convdepthwise4(x)))
         x+=residual
-        x = self.pixel_shuffle(self.convpointwise5(self.convdepthwise5(x)))
+        x=self.relu(self.convpointwise5(self.convdepthwise5(x)))
+        x = self.pixel_shuffle(x)
         return x
     def _initialize_weights(self):
         init.kaiming_normal_(self.convdepthwise2.weight, nonlinearity='leaky_relu')

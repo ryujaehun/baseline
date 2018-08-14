@@ -10,15 +10,30 @@ def default_conv(in_channels, out_channels, kernel_size, bias=True):
     return nn.Conv2d(
         in_channels, out_channels, kernel_size,
         padding=(kernel_size//2), bias=bias)
+class SeparableConv(nn.Module):
+
+    def __init__(self, in_channels, out_channels, kernel_size=3, bias=False, padding=1, stride=1):
+        super(SeparableConv, self).__init__()
+        self.conv1=nn.Conv2d(in_channels, out_channels, kernel_size,groups=out_channels,padding=(kernel_size//2), bias=bias)
+        self.conv2=nn.Conv2d(out_channels, out_channels, kernel_size=1,padding=0, bias=bias)
+
+
+    def forward(self,x):
+        x = self.conv1(x)
+        x = self.conv2(x)
+
+        return x
+
 
 class MeanShift(nn.Conv2d):
-    def __init__(self, rgb_range, rgb_mean, rgb_std, sign=-1):
+    def __init__(self, rgb_range, rgb_mean, rgb_std, sign=-1,_bias=True):
         super(MeanShift, self).__init__(3, 3, kernel_size=1)
         std = torch.Tensor(rgb_std)
         self.weight.data = torch.eye(3).view(3, 3, 1, 1)
         self.weight.data.div_(std.view(3, 1, 1, 1))
-        self.bias.data = sign * rgb_range * torch.Tensor(rgb_mean)
-        self.bias.data.div_(std)
+        if _bias is True:
+            self.bias.data = sign * rgb_range * torch.Tensor(rgb_mean)
+            self.bias.data.div_(std)
         self.requires_grad = False
 
 class BasicBlock(nn.Sequential):
@@ -83,4 +98,3 @@ class Upsampler(nn.Sequential):
             raise NotImplementedError
 
         super(Upsampler, self).__init__(*m)
-
