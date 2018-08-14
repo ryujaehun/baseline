@@ -14,7 +14,7 @@ class SeparableConv(nn.Module):
 
     def __init__(self, in_channels, out_channels, kernel_size=3, bias=False, padding=1, stride=1):
         super(SeparableConv, self).__init__()
-        self.conv1=nn.Conv2d(in_channels, out_channels, kernel_size,groups=out_channels,padding=(kernel_size//2), bias=bias)
+        self.conv1=nn.Conv2d(in_channels, out_channels, kernel_size,groups=in_channels,padding=(kernel_size//2), bias=bias)
         self.conv2=nn.Conv2d(out_channels, out_channels, kernel_size=1,padding=0, bias=bias)
 
 
@@ -75,6 +75,7 @@ class Upsampler(nn.Sequential):
 
         m = []
         if (scale & (scale - 1)) == 0:    # Is scale = 2^n?
+
             for _ in range(int(math.log(scale, 2))):
                 m.append(conv(n_feats, 4 * n_feats, 3, bias))
                 m.append(nn.PixelShuffle(2))
