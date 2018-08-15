@@ -1,7 +1,7 @@
 import os
 import math
 from decimal import Decimal
-
+import datetime
 import utility
 
 import torch
@@ -42,7 +42,9 @@ class Trainer():
         self.model.train()
 
         timer_data, timer_model = utility.timer(), utility.timer()
+        acc=0
         for batch, (lr, hr, _, idx_scale) in enumerate(self.loader_train):
+
             lr, hr = self.prepare(lr, hr)
             timer_data.hold()
             timer_model.tic()
@@ -61,15 +63,22 @@ class Trainer():
             timer_model.hold()
 
             if (batch + 1) % self.args.print_every == 0:
+                t1=timer_model.release()
+                t2=timer_data.release()
                 self.ckp.write_log('[{}/{}]\t{}\t{:.1f}+{:.1f}s'.format(
                     (batch + 1) * self.args.batch_size,
                     len(self.loader_train.dataset),
                     self.loss.display_loss(batch),
-                    timer_model.release(),
-                    timer_data.release()))
+                    t1,
+                    t2))
+
+                acc+=(t1+t2)
+
+
 
             timer_data.tic()
-
+        print('traing finished ',str(datetime.timedelta(seconds=round(acc*self.args.epochs-epoch))),'after {} epoch left.'.format(self.args.epochs-epoch))
+        acc=0
         self.loss.end_log(len(self.loader_train))
         self.error_last = self.loss.log[-1, -1]
 
@@ -107,7 +116,7 @@ class Trainer():
                     if self.args.save_results:
                         self.ckp.save_results(filename, save_list, scale)
 
-    
+
                 self.ckp.log[-1, idx_scale] = eval_acc / len(self.loader_test)
                 best = self.ckp.log.max(0)
                 self.ckp.write_log(
