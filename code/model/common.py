@@ -7,17 +7,23 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 
 def default_conv(in_channels, out_channels, kernel_size, bias=True):
+    if type(kernel_size) is type(tuple()):
+        _pad=tuple(list(map(lambda x:x//2,kernel_size)))
+    elif type(kernel_size) is type(int()):
+        _pad=(kernel_size//2)
     return nn.Conv2d(
         in_channels, out_channels, kernel_size,
-        padding=(kernel_size//2), bias=bias)
+        padding=_pad, bias=bias)
 class SeparableConv(nn.Module):
 
     def __init__(self, in_channels, out_channels, kernel_size=3, bias=False, padding=1, stride=1):
         super(SeparableConv, self).__init__()
-        self.conv1=nn.Conv2d(in_channels, out_channels, kernel_size,groups=in_channels,padding=(kernel_size//2), bias=bias)
+        if type(kernel_size) is type(tuple()):
+            _pad=tuple(list(map(lambda x:x//2,kernel_size)))
+        elif type(kernel_size) is type(int()):
+            _pad=(kernel_size//2)
+        self.conv1=nn.Conv2d(in_channels, out_channels, kernel_size,groups=in_channels,padding=_pad, bias=bias)
         self.conv2=nn.Conv2d(out_channels, out_channels, kernel_size=1,padding=0, bias=bias)
-
-
     def forward(self,x):
         x = self.conv1(x)
         x = self.conv2(x)

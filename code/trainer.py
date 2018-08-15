@@ -12,7 +12,6 @@ class Trainer():
     def __init__(self, args, loader, my_model, my_loss, ckp):
         self.args = args
         self.scale = args.scale
-
         self.ckp = ckp
         self.loader_train = loader.loader_train
         self.loader_test = loader.loader_test
@@ -74,10 +73,8 @@ class Trainer():
 
                 acc+=(t1+t2)
 
-
-
             timer_data.tic()
-        print('traing finished ',str(datetime.timedelta(seconds=round(acc*self.args.epochs-epoch))),'after {} epoch left.'.format(self.args.epochs-epoch))
+        print('traing finished ',str(datetime.timedelta(seconds=round(acc*self.args.epochs-epoch))),'left. {} epoch left.'.format(self.args.epochs-epoch))
         acc=0
         self.loss.end_log(len(self.loader_train))
         self.error_last = self.loss.log[-1, -1]
