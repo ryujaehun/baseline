@@ -144,6 +144,9 @@ parser.add_argument('--print_every', type=int, default=100,
 parser.add_argument('--save_results', action='store_true',
                     help='save output results')
 
+#IDN
+parser.add_argument('--n_feats_slice', type=int, default=4,  help='scale of slice feature')
+parser.add_argument('--nDiff', type=int, default=16,  help='number of diff feature')
 args = parser.parse_args()
 
 args.save=str(datetime.datetime.now()).strip()[:-7].replace(" ", "_")
