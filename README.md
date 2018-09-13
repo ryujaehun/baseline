@@ -1,5 +1,19 @@
 # EDSR-PyTorch
+# TODO
 
+1. image classification state of art
+  1. erase RELU
+  2. bottlenect activation function 
+2. 계산량 산정
+  1. mul or add culculation
+  2. model size
+  3. image inference speed
+3. 알려진 모델과 비교
+  * bicubic
+  * SRCNN
+  * EDSR
+  * VDSR
+4. tex를 이용하여 정리
 
 ## Dependencies
 * Python (Tested with 3.6)

@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
+from model import common
 from torch.autograd import Variable
 
 
@@ -33,20 +34,20 @@ class Enhancement_unit(nn.Module):
         self.s = nFeat_slice
 
         block_0 = []
-        block_0.append(nn.Conv2d(nFeat, nFeat-nDiff, kernel_size=3, padding=1, bias=True))
+        block_0.append(common.SeparableConv(nFeat, nFeat-nDiff, kernel_size=3, padding=1, bias=False,stride=1))
         block_0.append(nn.LeakyReLU(0.05))
-        block_0.append(nn.Conv2d(nFeat-nDiff, nFeat-2*nDiff, kernel_size=3, padding=1, bias=True))
+        block_0.append(common.SeparableConv(nFeat-nDiff, nFeat-2*nDiff, kernel_size=3, padding=1, bias=False,stride=1))
         block_0.append(nn.LeakyReLU(0.05))
-        block_0.append(nn.Conv2d(nFeat-2*nDiff, nFeat, kernel_size=3, padding=1, bias=True))
+        block_0.append(common.SeparableConv(nFeat-2*nDiff, nFeat, kernel_size=3, padding=1, bias=False,stride=1))
         block_0.append(nn.LeakyReLU(0.05))
         self.conv_block0 = nn.Sequential(*block_0)
 
         block_1 = []
-        block_1.append(nn.Conv2d(nFeat-nFeat//4, nFeat, kernel_size=3, padding=1, bias=True))
+        block_1.append(common.SeparableConv(nFeat-nFeat//4, nFeat, kernel_size=3, padding=1, bias=False,stride=1))
         block_1.append(nn.LeakyReLU(0.05))
-        block_1.append(nn.Conv2d(nFeat, nFeat-nDiff, kernel_size=3, padding=1, bias=True))
+        block_1.append(common.SeparableConv(nFeat, nFeat-nDiff, kernel_size=3, padding=1, bias=False,stride=1))
         block_1.append(nn.LeakyReLU(0.05))
-        block_1.append(nn.Conv2d(nFeat-nDiff, nFeat+nDiff, kernel_size=3, padding=1, bias=True))
+        block_1.append(common.SeparableConv(nFeat-nDiff, nFeat+nDiff, kernel_size=3, padding=1, bias=False,stride=1))
         block_1.append(nn.LeakyReLU(0.05))
         self.conv_block1 = nn.Sequential(*block_1)
         self.compress = nn.Conv2d(nFeat+nDiff, nFeat, kernel_size=1, padding=0, bias=True)
@@ -70,8 +71,8 @@ class IDN(nn.Module):
         nFeat_slice = args.n_feats_slice
         nChannel = args.n_colors
         self.scale = args.scale
-        self.conv1 = nn.Conv2d(nChannel, nFeat, kernel_size=3, padding=1, bias=True)
-        self.conv2 = nn.Conv2d(nFeat, nFeat, kernel_size=3, padding=1, bias=True)
+        self.conv1 =common.SeparableConv(nChannel, nFeat, kernel_size=3, padding=1, bias=False,stride=1)
+        self.conv2 =common.SeparableConv(nFeat, nFeat, kernel_size=3, padding=1, bias=False,stride=1)
 
         self.Enhan_unit1 = Enhancement_unit(nFeat, nDiff, nFeat_slice)
         self.Enhan_unit2 = Enhancement_unit(nFeat, nDiff, nFeat_slice)
