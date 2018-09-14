@@ -1,0 +1,468 @@
+EDSR(
+  (sub_mean): MeanShift(3, 3, kernel_size=(1, 1), stride=(1, 1))
+  (add_mean): MeanShift(3, 3, kernel_size=(1, 1), stride=(1, 1))
+  (head): Sequential(
+    (0): Conv2d(3, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  )
+  (body): Sequential(
+    (0): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (1): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (2): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (3): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (4): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (5): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (6): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (7): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (8): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (9): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (10): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (11): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (12): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (13): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (14): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (15): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (16): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (17): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (18): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (19): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (20): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (21): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (22): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (23): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (24): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (25): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (26): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (27): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (28): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (29): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (30): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (31): ResBlock(
+      (body): Sequential(
+        (0): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+        (1): ReLU(inplace)
+        (2): SeparableConv(
+          (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+          (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (32): SeparableConv(
+      (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256, bias=False)
+      (conv2): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    )
+  )
+  (tail): Sequential(
+    (0): Upsampler(
+      (0): Conv2d(256, 1024, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): PixelShuffle(upscale_factor=2)
+    )
+    (1): Conv2d(256, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  )
+)
+[Epoch 1]	Learning rate: 1.00e-4
+[6400/66400]	[L1: 11.2816]	44.2+0.9s
+[12800/66400]	[L1: 8.6135]	44.8+0.0s
+[19200/66400]	[L1: 7.6468]	44.5+0.0s
+[25600/66400]	[L1: 7.0410]	44.3+0.0s
+[32000/66400]	[L1: 6.6612]	44.3+0.0s
+[38400/66400]	[L1: 6.3877]	44.2+0.1s
+[44800/66400]	[L1: 6.1970]	45.0+0.0s
+[51200/66400]	[L1: 6.0321]	44.8+0.1s
+[57600/66400]	[L1: 5.8870]	44.4+0.0s
+[64000/66400]	[L1: 5.7787]	44.9+0.0s
+
+Evaluation:
+[DIV2K x2]	PSNR: 31.484 (Best: 31.484 @epoch 1)
+Total time: 491.83s
+
+[Epoch 2]	Learning rate: 1.00e-4
+[6400/66400]	[L1: 4.7601]	44.5+0.8s
+[12800/66400]	[L1: 4.7463]	44.7+0.0s
+[19200/66400]	[L1: 4.7413]	44.7+0.1s
+[25600/66400]	[L1: 4.7208]	44.9+0.0s
+[32000/66400]	[L1: 4.6947]	44.6+0.1s
+[38400/66400]	[L1: 4.6814]	45.1+0.1s
+[44800/66400]	[L1: 4.6802]	45.0+0.0s
+[51200/66400]	[L1: 4.6669]	44.7+0.0s
+[57600/66400]	[L1: 4.6597]	44.7+0.0s
+[64000/66400]	[L1: 4.6460]	45.4+0.0s
+
+Evaluation:
+[DIV2K x2]	PSNR: 31.755 (Best: 31.755 @epoch 2)
+Total time: 493.71s
+

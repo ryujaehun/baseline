@@ -9,7 +9,7 @@ parser.add_argument('--template', default='.',
                     help='You can set various templates in option.py')
 
 # Hardware specifications
-parser.add_argument('--n_threads', type=int, default=12,
+parser.add_argument('--n_threads', type=int, default=8,
                     help='number of threads for data loading')
 parser.add_argument('--cpu', action='store_true',
                     help='use cpu only')
@@ -27,13 +27,13 @@ parser.add_argument('--data_train', type=str, default='DIV2K',
                     help='train dataset name')
 parser.add_argument('--data_test', type=str, default='DIV2K',
                     help='test dataset name')
-parser.add_argument('--data_range', type=str, default='1-850/851-900',
+parser.add_argument('--data_range', type=str, default='1-800/801-900',
                     help='train/test data range')
 parser.add_argument('--ext', type=str, default='sep',
                     help='dataset file extension')
 parser.add_argument('--scale', type=str, default='2',
                     help='super resolution scale')
-parser.add_argument('--patch_size', type=int, default=96,
+parser.add_argument('--patch_size', type=int, default=48,
                     help='output patch size')
 parser.add_argument('--rgb_range', type=int, default=255,
                     help='maximum value of RGB')
@@ -54,11 +54,11 @@ parser.add_argument('--pre_train', type=str, default='.',
                     help='pre-trained model directory')
 parser.add_argument('--extend', type=str, default='.',
                     help='pre-trained model directory')
-parser.add_argument('--n_resblocks', type=int, default=16,
+parser.add_argument('--n_resblocks', type=int, default=64,
                     help='number of residual blocks')
-parser.add_argument('--n_feats', type=int, default=32,
+parser.add_argument('--n_feats', type=int, default=256,
                     help='number of feature maps')
-parser.add_argument('--res_scale', type=float, default=1,
+parser.add_argument('--res_scale', type=float, default=0.1,
                     help='residual scaling')
 parser.add_argument('--shift_mean', default=True,
                     help='subtract pixel mean from the input')
