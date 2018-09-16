@@ -45,7 +45,7 @@ parser.add_argument('--no_augment', action='store_true',
                     help='do not use data augmentation')
 
 # Model specifications
-parser.add_argument('--model', default='SOL',
+parser.add_argument('--model', default='EDSR',
                     help='model name')
 
 parser.add_argument('--act', type=str, default='relu',
