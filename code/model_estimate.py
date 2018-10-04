@@ -11,6 +11,7 @@ from model.vdsr import *
 from model.srcnn import *
 from model.espcn import *
 from model.kaist import *
+
 from pandas import DataFrame
 from graphviz import Digraph
 
@@ -142,13 +143,22 @@ def main():
     elif args.model == 'KAIST':
         _model=KAIST()
         input=torch.rand(1,1,224,224)
+    elif args.model == 'MDSR':
+        from model.mdsr import MDSR
+        _model=MDSR(args)
+        input=torch.rand(1,3,224,224)
+    elif args.model == 'MDSR_MOBILE':
+        from model.mdsr_mobile import MDSR
+        _model=MDSR(args)
+        input=torch.rand(1,3,224,224)
+
     else:
         raise NotImplementedError("To be implemented")
 
 
     print_model_parm_flops(_model,input)
     print_model_parm_nums(_model)
-    visual(_model,input)
+    #visual(_model,input)
     total.to_csv(args.model+'_total.csv',index=False)
 
 if __name__ == '__main__':

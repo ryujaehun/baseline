@@ -1,0 +1,16 @@
+#! /bin/bash
+python3 main.py --data_test Set5 --scale 2  --pre_train ../experiment/2018-09-17_10:41:02/model/model_best.pt --test_only 
+python3 main.py --data_test Set5 --scale 3  --pre_train ../experiment/2018-09-17_17:31:39/model/model_best.pt --test_only 
+python3 main.py --data_test Set5 --scale 4  --pre_train ../experiment/2018-09-17_21:27:34/model/model_best.pt --test_only 
+
+python3 main.py --data_test Set14 --scale 2  --pre_train ../experiment/2018-09-17_10:41:02/model/model_best.pt --test_only 
+python3 main.py --data_test Set14 --scale 3  --pre_train ../experiment/2018-09-17_17:31:39/model/model_best.pt --test_only 
+python3 main.py --data_test Set14 --scale 4  --pre_train ../experiment/2018-09-17_21:27:34/model/model_best.pt --test_only 
+
+python3 main.py --data_test B100 --scale 2  --pre_train ../experiment/2018-09-17_10:41:02/model/model_best.pt --test_only 
+python3 main.py --data_test B100 --scale 3  --pre_train ../experiment/2018-09-17_17:31:39/model/model_best.pt --test_only 
+python3 main.py --data_test B100 --scale 4  --pre_train ../experiment/2018-09-17_21:27:34/model/model_best.pt --test_only 
+
+python3 main.py --data_test Urban100 --scale 2  --pre_train ../experiment/2018-09-17_10:41:02/model/model_best.pt --test_only 
+python3 main.py --data_test Urban100 --scale 3  --pre_train ../experiment/2018-09-17_17:31:39/model/model_best.pt --test_only 
+python3 main.py --data_test Urban100 --scale 4  --pre_train ../experiment/2018-09-17_21:27:34/model/model_best.pt --test_only 

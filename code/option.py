@@ -45,20 +45,20 @@ parser.add_argument('--no_augment', action='store_true',
                     help='do not use data augmentation')
 
 # Model specifications
-parser.add_argument('--model', default='EDSR',
+parser.add_argument('--model', default='EDSR_MOBILE',
                     help='model name')
 
-parser.add_argument('--act', type=str, default='relu',
+parser.add_argument('--act', type=str, default='prelu',
                     help='activation function')
 parser.add_argument('--pre_train', type=str, default='.',
                     help='pre-trained model directory')
 parser.add_argument('--extend', type=str, default='.',
                     help='pre-trained model directory')
-parser.add_argument('--n_resblocks', type=int, default=64,
+parser.add_argument('--n_resblocks', type=int, default=8,
                     help='number of residual blocks')
-parser.add_argument('--n_feats', type=int, default=256,
+parser.add_argument('--n_feats', type=int, default=32,
                     help='number of feature maps')
-parser.add_argument('--res_scale', type=float, default=0.1,
+parser.add_argument('--res_scale', type=float, default=1,
                     help='residual scaling')
 parser.add_argument('--shift_mean', default=True,
                     help='subtract pixel mean from the input')
@@ -145,8 +145,7 @@ parser.add_argument('--save_results', action='store_true',
                     help='save output results')
 
 #IDN
-parser.add_argument('--n_feats_slice', type=int, default=4,  help='scale of slice feature')
-parser.add_argument('--nDiff', type=int, default=16,  help='number of diff feature')
+
 args = parser.parse_args()
 
 args.save=str(datetime.datetime.now()).strip()[:-7].replace(" ", "_")
