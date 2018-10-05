@@ -8,6 +8,8 @@ from option import args
 from trainer import Trainer
 import subprocess
 import model_estimate
+import warnings
+warnings.filterwarnings('ignore')
 torch.backends.cudnn.benchmark = True
 torch.manual_seed(args.seed)
 checkpoint = utility.checkpoint(args)
@@ -27,7 +29,7 @@ if checkpoint.ok:
         path+='/model/model_best.pth.tar'
 
     checkpoint.done()
-for i in ['B100','Set14','Set5','Urban100','DIV2K']:
+for i in ['Set5','Set14','B100','Urban100','DIV2K']:
     if path !='':
         proc = subprocess.Popen( 'python3 main.py  --save '+str(args.save)+'/'+i+' --data_test '+i+' --ext img --scale '+str(args.scale[0])+' --n_resblocks '+str(args.n_resblocks)+' --n_feats '+str(args.n_feats)+' --res_scale '+str(args.res_scale)+' --pre_train '+path+' --test_only --save_results', shell=True, executable='/bin/bash')
         proc.communicate()

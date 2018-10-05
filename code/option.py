@@ -54,9 +54,9 @@ parser.add_argument('--pre_train', type=str, default='.',
                     help='pre-trained model directory')
 parser.add_argument('--extend', type=str, default='.',
                     help='pre-trained model directory')
-parser.add_argument('--n_resblocks', type=int, default=32,
+parser.add_argument('--n_resblocks', type=int, default=1,
                     help='number of residual blocks')
-parser.add_argument('--n_feats', type=int, default=64,
+parser.add_argument('--n_feats', type=int, default=4,
                     help='number of feature maps')
 parser.add_argument('--res_scale', type=float, default=1,
                     help='residual scaling')
@@ -87,9 +87,9 @@ parser.add_argument('--reset', action='store_true',
                     help='reset the training')
 parser.add_argument('--test_every', type=int, default=1000,
                     help='do test per every N batches')
-parser.add_argument('--epochs', type=int, default=4,
+parser.add_argument('--epochs', type=int, default=1,
                     help='number of epochs to train')
-parser.add_argument('--batch_size', type=int, default=32,
+parser.add_argument('--batch_size', type=int, default=2,
                     help='input batch size for training')
 parser.add_argument('--split_batch', type=int, default=1,
                     help='split the batch into smaller chunks')
@@ -146,7 +146,7 @@ parser.add_argument('--save_results', action='store_true',
 
 # model_estimate
 
-parser.add_argument('--resolution', type=str, default='FHD',
+parser.add_argument('--resolution', type=str, default='HD',
                     help='benchmark resolution')
 
 args = parser.parse_args()
