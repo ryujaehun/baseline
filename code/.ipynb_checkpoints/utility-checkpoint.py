@@ -46,17 +46,14 @@ class checkpoint():
         now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
 
         if args.load == '.':
-
-            if args.save == '.':
-                args.save=now
-
+            if args.save == '.': args.save = now
             self.dir = '../experiment/' + args.save
         else:
             self.dir = '../experiment/' + args.load
             if not os.path.exists(self.dir):
                 args.load = '.'
             else:
-                self.log = torch.load(self.dir + '/psnr_log.pth.tar')
+                self.log = torch.load(self.dir + '/psnr_log.pt')
                 print('Continue from epoch {}...'.format(len(self.log)))
 
         if args.reset:
@@ -84,10 +81,10 @@ class checkpoint():
         trainer.loss.plot_loss(self.dir, epoch)
 
         self.plot_psnr(epoch)
-        torch.save(self.log, os.path.join(self.dir, 'psnr_log.pth.tar'))
+        torch.save(self.log, os.path.join(self.dir, 'psnr_log.pt'))
         torch.save(
             trainer.optimizer.state_dict(),
-            os.path.join(self.dir, 'optimizer.pth.tar')
+            os.path.join(self.dir, 'optimizer.pt')
         )
 
     def add_log(self, log):
@@ -118,7 +115,7 @@ class checkpoint():
         plt.xlabel('Epochs')
         plt.ylabel('PSNR')
         plt.grid(True)
-        plt.savefig('{}/test_{}.png'.format(self.dir, self.args.data_test))
+        plt.savefig('{}/test_{}.pdf'.format(self.dir, self.args.data_test))
         plt.close(fig)
 
     def save_results(self, filename, save_list, scale):

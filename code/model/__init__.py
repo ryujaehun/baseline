@@ -66,19 +66,19 @@ class Model(nn.Module):
     def save(self, apath, epoch, is_best=False):
         target = self.get_model()
         torch.save(
-            target.state_dict(), 
-            os.path.join(apath, 'model', 'model_latest.pt')
+            target.state_dict(),
+            os.path.join(apath, 'model', 'model_latest.pth.tar')
         )
         if is_best:
             torch.save(
                 target.state_dict(),
-                os.path.join(apath, 'model', 'model_best.pt')
+                os.path.join(apath, 'model', 'model_best.pth.tar')
             )
-        
+
         if self.save_models:
             torch.save(
                 target.state_dict(),
-                os.path.join(apath, 'model', 'model_{}.pt'.format(epoch))
+                os.path.join(apath, 'model', 'model_{}.pth.tar'.format(epoch))
             )
 
     def load(self, apath, pre_train='.', resume=-1, cpu=False):
@@ -90,7 +90,7 @@ class Model(nn.Module):
         if resume == -1:
             self.get_model().load_state_dict(
                 torch.load(
-                    os.path.join(apath, 'model', 'model_latest.pt'),
+                    os.path.join(apath, 'model', 'model_latest.pth.tar'),
                     **kwargs
                 ),
                 strict=False
@@ -105,7 +105,7 @@ class Model(nn.Module):
         else:
             self.get_model().load_state_dict(
                 torch.load(
-                    os.path.join(apath, 'model', 'model_{}.pt'.format(resume)),
+                    os.path.join(apath, 'model', 'model_{}.pth.tar'.format(resume)),
                     **kwargs
                 ),
                 strict=False
@@ -186,4 +186,3 @@ class Model(nn.Module):
         output = output_cat.mean(dim=0, keepdim=True)
 
         return output
-

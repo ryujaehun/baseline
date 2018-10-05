@@ -1,4 +1,0 @@
-#! /bin/bash
-python3 main.py --ext bin__reset  --model EDSR_MOBILE --batch_size 512 --n_feats 32 --n_resblocks 8 --act prelu --chop --loss "1*MSE" --epochs 90 --scale 2
-python3 main.py --ext bin__reset  --model EDSR_MOBILE --batch_size 512 --n_feats 32 --n_resblocks 8 --act prelu --chop --loss "1*MSE" --epochs 90 --scale 3
-python3 main.py --ext bin__reset  --model EDSR_MOBILE --batch_size 512 --n_feats 32 --n_resblocks 8 --act prelu --chop --loss "1*MSE" --epochs 90 --scale 4

@@ -37,7 +37,7 @@ class Loss(nn.modules.loss._Loss):
                     args,
                     loss_type
                 )
-           
+
             self.loss.append({
                 'type': loss_type,
                 'weight': float(weight),
@@ -113,7 +113,7 @@ class Loss(nn.modules.loss._Loss):
             plt.xlabel('Epochs')
             plt.ylabel('Loss')
             plt.grid(True)
-            plt.savefig('{}/loss_{}.pdf'.format(apath, l['type']))
+            plt.savefig('{}/loss_{}.png'.format(apath, l['type']))
             plt.close(fig)
 
     def get_loss_module(self):
@@ -123,8 +123,8 @@ class Loss(nn.modules.loss._Loss):
             return self.loss_module.module
 
     def save(self, apath):
-        torch.save(self.state_dict(), os.path.join(apath, 'loss.pt'))
-        torch.save(self.log, os.path.join(apath, 'loss_log.pt'))
+        torch.save(self.state_dict(), os.path.join(apath, 'loss.pth.tar'))
+        torch.save(self.log, os.path.join(apath, 'loss_log.pth.tar'))
 
     def load(self, apath, cpu=False):
         if cpu:
@@ -133,11 +133,10 @@ class Loss(nn.modules.loss._Loss):
             kwargs = {}
 
         self.load_state_dict(torch.load(
-            os.path.join(apath, 'loss.pt'),
+            os.path.join(apath, 'loss.pth.tar'),
             **kwargs
         ))
-        self.log = torch.load(os.path.join(apath, 'loss_log.pt'))
+        self.log = torch.load(os.path.join(apath, 'loss_log.pth.tar'))
         for l in self.loss_module:
             if hasattr(l, 'scheduler'):
                 for _ in range(len(self.log)): l.scheduler.step()
-

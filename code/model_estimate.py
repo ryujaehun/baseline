@@ -1,34 +1,31 @@
-from option import args
+import option
 import torch
 import torchvision
 import torch.nn as nn
-from torchviz import make_dot, make_dot_from_trace
 from torch.autograd import Variable
 import torchvision.models as models
 import numpy as np
 import pandas as pd
-from model.vdsr import *
-from model.srcnn import *
-from model.espcn import *
-from model.kaist import *
-
 from pandas import DataFrame
-from graphviz import Digraph
+import os
+resolution={'HD':(1280,720),'FHD':(1920,1080),'QHD':(2560,1440),'UHD':(3840,2160)}
 
-index=['total flops','num of parameters','estimated of size']
-total=DataFrame(data=np.zeros((1,3)),columns=index)
-total.name=args.model
-def print_model_parm_nums(my_models=VDSR()):
-    model = my_models#EDSR(args)
+list_model=['srcnn','fsrcnn','vdsr','kaist','edsr','mymodel1']
+
+
+def print_model_parm_nums(my_models):
+    model = my_models
     trainable = filter(lambda x: x.requires_grad, model.parameters())
     num_params = sum([np.prod(p.size()) for p in filter(lambda x: x.requires_grad, model.parameters())])
-    total['num of parameters']=(int(num_params) )
-    total['estimated of size']=(int(num_params) *4)
-    print('num of parameters: %.4fM ' % (int(num_params) / 1e6) +'\n')
-    print('estimated of size %.4fM ' % (int(num_params) / 1e6*4) +'\n')
-def print_model_parm_flops(my_models=models.resnet50(),_input=torch.rand(1,3,224,224)):
+    temp=[]
+    temp.append(str(int(num_params) / 1e6)[:-2]+' M')
+    temp.append(str(int(num_params) / 1e6*4)[:-2]+' M')
+    return temp
+
+def print_model_parm_flops(my_models,_input=torch.rand(1,3,224,224)):
     multiply_adds = False
     list_conv=[]
+    list_conv_feature=[]
     def conv_hook(self, input, output):
         Tt=lambda x:torch.tensor(x)
         batch_size, input_channels, input_height, input_width = input[0].size()
@@ -38,16 +35,20 @@ def print_model_parm_flops(my_models=models.resnet50(),_input=torch.rand(1,3,224
         params = Tt(output_channels) * Tt(kernel_ops + bias_ops)
         flops = Tt(batch_size) * Tt(params) * Tt(output_height) * Tt(output_width)
         list_conv.append(flops)
-    list_linear=[]
-    def linear_hook(self, input, output):
 
+        if self.groups == 1:
+
+            list_conv_feature.append(Tt(batch_size) * Tt(output_channels) * Tt(output_height) * Tt(output_width))
+    list_linear=[]
+
+    def linear_hook(self, input, output):
         Tt=lambda x:torch.tensor(x)
         batch_size = Tt(input[0].size(0) if input[0].dim() == 2 else 1)
-
         weight_ops = Tt(self.weight.nelement()) * Tt(2 if multiply_adds else 1)
         bias_ops = Tt(self.bias.nelement())
         flops = Tt(batch_size) * Tt(weight_ops + bias_ops)
         list_linear.append(flops)
+
     list_bn=[]
     def bn_hook(self, input, output):
         list_bn.append(input[0].nelement())
@@ -58,6 +59,7 @@ def print_model_parm_flops(my_models=models.resnet50(),_input=torch.rand(1,3,224
         list_relu.append(input[0].nelement())
 
     list_pooling=[]
+    list_pooling_feature=[]
     def pooling_hook(self, input, output):
         Tt=lambda x:torch.tensor(x)
         batch_size, input_channels, input_height, input_width = input[0].size()
@@ -67,6 +69,7 @@ def print_model_parm_flops(my_models=models.resnet50(),_input=torch.rand(1,3,224
         params = Tt(output_channels) * Tt(kernel_ops + bias_ops)
         flops = Tt(batch_size) * Tt(params) * Tt(output_height) * Tt(output_width)
         list_pooling.append(flops)
+        list_pooling_feature.append(Tt(batch_size) * Tt(output_channels) * Tt(output_height) * Tt(output_width))
 
     def register_hook(net):
         childrens = list(net.children())
@@ -85,81 +88,93 @@ def print_model_parm_flops(my_models=models.resnet50(),_input=torch.rand(1,3,224
         for c in childrens:
                 register_hook(c)
 
-    model =my_models
+    model =my_models.cuda()
     register_hook(model)
     with torch.no_grad():
-        input = _input
+        input = _input.cuda()
         out = model(input)
 
     total_flops = (sum(list_conv) + sum(list_linear) + sum(list_bn) + sum(list_relu) + sum(list_pooling))
-    total['total flops']=total_flops.item()
-    print('Total Number of FLOPs: %.3fG' % (total_flops.item() / 1e9)+'\n')
-    _index=['conv','linear','batch norm','activation','pooling']
-    layer_csv=DataFrame(data=np.zeros((max([len(list_conv),len(list_linear),len(list_relu),len(list_pooling)]),5)),columns=_index)
-
-    for i in range(len(list_conv)):
-        layer_csv['conv'][i]=list_conv[i].item()
-        print(' Conv  layer `s '+str(i+1) + 'f FLOPs: %.3fG' % (list_conv[i].item() / 1e9)+'\n')
-    for i in range(len(list_linear)):
-        print(' linear layer `s '+str(i+1) +' of FLOPs: %.3fG' % (list_linear[i].item() / 1e9)+'\n')
-        layer_csv['linear'][i]=list_linear[i].item()
-    for i in range(len(list_bn)):
-        print(' batch norm layer `s '+str(i+1) +' of FLOPs: %.3fG' % (list_bn[i].item() / 1e9)+'\n')
-        layer_csv['batch norm'][i]=list_bn[i].item()
-    for i in range(len(list_relu)):
-        print(' activation layer `s '+str(i+1) +' of FLOPs: %.4fG' % (list_relu[i] / 1e9)+'\n')
-        layer_csv['activation'][i]=list_relu[i]
-    for i in range(len(list_pooling)):
-        print(' pooling layer `s '+str(i+1) +' of FLOPs: %.3fG' % (list_pooling[i].item() / 1e9)+'\n')
-        layer_csv['pooling'][i]=list_pooling[i].item()
-    layer_csv.to_csv(args.model+'_layer.csv',index=False)
-
-def visual(_model=models.AlexNet(),_input=torch.randn(1, 3, 224, 224).requires_grad_(True),filename=args.model):
-    model =_model#VDSR()
-
-    x = _input
-    y = model(x)
-    make_dot(y, params=dict(list(model.named_parameters()) + [('x', x)])).render(filename=filename)
-
-def main():
-
-    if args.model == 'EDSR':
-        from model.edsr import EDSR
-        _model=EDSR(args)
-        input=torch.rand(1,3,224,224)
-    elif args.model == 'EDSR_MOBILE':
-        from model.edsr_mobile import EDSR
-        _model=EDSR(args)
-        input=torch.rand(1,3,224,224)
-    elif args.model == 'VDSR':
-        _model=VDSR()
-        input=torch.rand(1,1,224,224)
-    elif args.model == 'SRCNN':
-        _model=SRCNN()
-        input=torch.rand(1,1,224,224)
-    elif args.model == 'ESPCN':
-        _model=ESPCN()
-        input=torch.rand(1,1,224,224)
-    elif args.model == 'KAIST':
-        _model=KAIST()
-        input=torch.rand(1,1,224,224)
-    elif args.model == 'MDSR':
-        from model.mdsr import MDSR
-        _model=MDSR(args)
-        input=torch.rand(1,3,224,224)
-    elif args.model == 'MDSR_MOBILE':
-        from model.mdsr_mobile import MDSR
-        _model=MDSR(args)
-        input=torch.rand(1,3,224,224)
-
-    else:
-        raise NotImplementedError("To be implemented")
+    total_feature = sum(list_conv_feature) #+ sum(list_linear) + sum(list_bn) + sum(list_relu) + sum(list_pooling_feature))
+    temp=[]
+    temp.append(str(total_flops.item() / 1e9)[:-2]+' G')
+    temp.append(str(total_feature.item()*4/1e6)[:-2]+' M')
+    temp.append(int(len(list_conv)))
+    return temp
 
 
-    print_model_parm_flops(_model,input)
-    print_model_parm_nums(_model)
-    #visual(_model,input)
-    total.to_csv(args.model+'_total.csv',index=False)
+
+def main(args):
+    size=resolution[args.resolution]
+    path='/'+'/'.join(os.getcwd().split('/')[1:-1])
+    path=os.path.join(path,'experiment')
+    path=os.path.join(path,args.save)
+    result=dict()
+
+    for i in list_model:
+        args.model=i
+
+        if args.model.upper() == 'EDSR':
+            from model.edsr import EDSR
+            _model=EDSR(args)
+            input=torch.rand(1,3,size[0]//2,size[1]//2)
+        elif args.model.upper() == 'EDSR_MOBILE':
+            from model.edsr_mobile import EDSR
+            _model=EDSR(args)
+            input=torch.rand(1,3,size[0]//2,size[1]//2)
+        elif args.model.upper() == 'VDSR':
+            from model.vdsr import VDSR
+            _model=VDSR()
+            input=torch.rand(1,1,size[0],size[1])
+        elif args.model.upper() == 'SRCNN':
+            from model.srcnn import SRCNN
+            _model=SRCNN()
+            input=torch.rand(1,1,size[0],size[1])
+        elif args.model.upper() == 'ESPCN':
+            from model.espcn import ESPCN
+            _model=ESPCN()
+            input=torch.rand(1,1,size[0]//2,size[1]//2)
+        elif args.model.upper() == 'KAIST':
+            from model.kaist import KAIST
+            _model=KAIST()
+            input=torch.rand(1,1,size[0]//2,size[1]//2)
+        elif args.model.upper() == 'MDSR':
+            from model.mdsr import MDSR
+            _model=MDSR(args)
+            input=torch.rand(1,3,size[0]//2,size[1]//2)
+
+        elif args.model.upper() == 'MYMODEL1':
+            from model.mymodel1 import MYMODEL1
+            _model=MYMODEL1(args)
+            input=torch.rand(1,3,size[0]//2,size[1]//2)
+
+        elif args.model.upper() == 'MDSR_MOBILE':
+            from model.mdsr_mobile import MDSR
+            _model=MDSR(args)
+            input=torch.rand(1,3,size[0]//2,size[1]//2)
+        elif args.model.upper() == 'FSRCNN':
+            from model.fsrcnn import FSRCNN
+            _model=FSRCNN( num_channels=1, upscale_factor=args.scale)
+            input=torch.rand(1,1,size[0]//2,size[1]//2)
+        elif args.model.upper() == 'DRCN':
+            from model.drcn import DRCN
+            _model=DRCN(num_channels=1,base_channel=256,num_recursions=16)
+            input=torch.rand(1,1,size[0],size[1])
+        else:
+            raise NotImplementedError("To be implemented")
+
+        temp=print_model_parm_flops(_model,input)
+        temp.extend(print_model_parm_nums(_model))
+        result[args.model]=temp
+
+    df=pd.DataFrame(result,index=['# of Gflops (FHD)','feature size','# of layer',"# of Params",'model size'])
+    df=df.reindex_axis(list_model, axis=1)
+    df=df.reindex(["# of Params",'# of Gflops (FHD)','# of layer','feature size','model size'])
+    df.to_html(path+'/report.html')
+    df.to_csv(path+'/report.csv')
+    df.to_latex(path+'/report.latex')
+
+
 
 if __name__ == '__main__':
-    main()
+    main(option.args)
