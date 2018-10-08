@@ -14,7 +14,8 @@ torch.backends.cudnn.benchmark = True
 torch.manual_seed(args.seed)
 checkpoint = utility.checkpoint(args)
 path=''
-model_estimate.main(args)
+if args.recursive is True:
+    model_estimate.main(args)
 if checkpoint.ok:
     loader = data.Data(args)
     model = model.Model(args, checkpoint)
@@ -23,13 +24,14 @@ if checkpoint.ok:
     while not t.terminate():
         t.train()
         t.test()
-        path='/'+'/'.join(os.getcwd().split('/')[1:-1])
-        path=os.path.join(path,'experiment')
-        path=os.path.join(path,args.save)
-        path+='/model/model_best.pth.tar'
-
     checkpoint.done()
-for i in ['Set5','Set14','B100','Urban100','DIV2K']:
-    if path !='':
-        proc = subprocess.Popen( 'python3 main.py  --save '+str(args.save)+'/'+i+' --data_test '+i+' --ext img --scale '+str(args.scale[0])+' --n_resblocks '+str(args.n_resblocks)+' --n_feats '+str(args.n_feats)+' --res_scale '+str(args.res_scale)+' --pre_train '+path+' --test_only --save_results', shell=True, executable='/bin/bash')
-        proc.communicate()
+
+path='/'+'/'.join(os.getcwd().split('/')[1:-1])
+path=os.path.join(path,'experiment')
+path=os.path.join(path,args.save)
+path+='/model/model_best_x'+str(args.scale[0])+'.pth.tar'
+if args.recursive is True:
+    for i in ['Set5','Set14','B100','Urban100','DIV2K']:
+        if path !='':
+            proc = subprocess.Popen( 'python3 main.py  --save '+str(args.save)+'/'+i+' --model '+args.model+' --data_test '+i+' --ext img --scale '+str(args.scale[0])+' --n_resblocks '+str(args.n_resblocks)+' --n_feats '+str(args.n_feats)+' --res_scale '+str(args.res_scale)+' --pre_train '+path+' --test_only --save_results --recursive False', shell=True, executable='/bin/bash')
+            proc.communicate()

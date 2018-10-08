@@ -15,6 +15,7 @@ class Loss(nn.modules.loss._Loss):
     def __init__(self, args, ckp):
         super(Loss, self).__init__()
         print('Preparing loss function:')
+        self.args=args
 
         self.n_GPUs = args.n_GPUs
         self.loss = []
@@ -123,8 +124,8 @@ class Loss(nn.modules.loss._Loss):
             return self.loss_module.module
 
     def save(self, apath):
-        torch.save(self.state_dict(), os.path.join(apath, 'loss.pth.tar'))
-        torch.save(self.log, os.path.join(apath, 'loss_log.pth.tar'))
+        torch.save(self.state_dict(), os.path.join(apath, 'loss_'+str(self.args.scale[0])+'.pth.tar'))
+        torch.save(self.log, os.path.join(apath, 'loss_log_'+str(self.args.scale[0])+'.pth.tar'))
 
     def load(self, apath, cpu=False):
         if cpu:
@@ -133,10 +134,10 @@ class Loss(nn.modules.loss._Loss):
             kwargs = {}
 
         self.load_state_dict(torch.load(
-            os.path.join(apath, 'loss.pth.tar'),
+            os.path.join(apath, 'loss_'+str(self.args.scale[0])+'.pth.tar'),
             **kwargs
         ))
-        self.log = torch.load(os.path.join(apath, 'loss_log.pth.tar'))
+        self.log = torch.load(os.path.join(apath, 'loss_log_'+str(self.args.scale[0])+'.pth.tar'))
         for l in self.loss_module:
             if hasattr(l, 'scheduler'):
                 for _ in range(len(self.log)): l.scheduler.step()

@@ -56,7 +56,7 @@ class checkpoint():
             if not os.path.exists(self.dir):
                 args.load = '.'
             else:
-                self.log = torch.load(self.dir + '/psnr_log.pth.tar')
+                self.log = torch.load(self.dir + '/psnr_log_x'+str(self.args.scale[0])+'.pth.tar')
                 print('Continue from epoch {}...'.format(len(self.log)))
 
         if args.reset:
@@ -70,9 +70,18 @@ class checkpoint():
         _make_dir(self.dir + '/model')
         _make_dir(self.dir + '/results')
 
-        open_type = 'a' if os.path.exists(self.dir + '/log.txt') else 'w'
-        self.log_file = open(self.dir + '/log.txt', open_type)
-        with open(self.dir + '/config.txt', open_type) as f:
+        open_type = 'a' if os.path.exists(self.dir + '/log_x'+str(self.args.scale[0])+'.txt') else 'w'
+        self.log_file = open(self.dir + '/log_x'+str(self.args.scale[0])+'.txt', open_type)
+        with open(self.dir + '/config_x'+str(self.args.scale[0])+'.txt', open_type) as f:
+            cudnn_version='cudnn version :'+str(torch.backends.cudnn.version())
+            cuda_version ='cuda_version :'+ str(torch.version.cuda)
+            number_of_gpus_on_current_device='number_of_gpus_on_current_device :'+str(torch.cuda.device_count())
+            device_name='device_name :'+str(torch.cuda.get_device_name(0))
+
+            f.write(number_of_gpus_on_current_device + '\n')
+            f.write(device_name + '\n')
+            f.write(cuda_version + '\n')
+            f.write(cudnn_version + '\n')
             f.write(now + '\n\n')
             for arg in vars(args):
                 f.write('{}: {}\n'.format(arg, getattr(args, arg)))
@@ -84,10 +93,10 @@ class checkpoint():
         trainer.loss.plot_loss(self.dir, epoch)
 
         self.plot_psnr(epoch)
-        torch.save(self.log, os.path.join(self.dir, 'psnr_log.pth.tar'))
+        torch.save(self.log, os.path.join(self.dir, 'psnr_log_x'+str(self.args.scale[0])+'.pth.tar'))
         torch.save(
             trainer.optimizer.state_dict(),
-            os.path.join(self.dir, 'optimizer.pth.tar')
+            os.path.join(self.dir, 'optimizer_x'+str(self.args.scale[0])+'.pth.tar')
         )
 
     def add_log(self, log):
@@ -98,7 +107,7 @@ class checkpoint():
         self.log_file.write(log + '\n')
         if refresh:
             self.log_file.close()
-            self.log_file = open(self.dir + '/log.txt', 'a')
+            self.log_file = open(self.dir + '/log_x'+str(self.args.scale[0])+'.txt', 'a')
 
     def done(self):
         self.log_file.close()
@@ -161,7 +170,7 @@ def make_optimizer(args, my_model):
     trainable = filter(lambda x: x.requires_grad, my_model.parameters())
     num_params = sum([np.prod(p.size()) for p in filter(lambda x: x.requires_grad, my_model.parameters())])
     print('num of parameters: ' + str(num_params)+'\n')
-    with open('../experiment/' + args.save + '/num_of_parameters.txt', 'a') as f:
+    with open('../experiment/' + args.save + '/num_of_parameters_x'+str(args.scale[0])+'.txt', 'a') as f:
         f.write('num of parameters: ' + str(num_params)+'\n')
 
     if args.optimizer == 'SGD':

@@ -5,13 +5,13 @@ import torch.nn as nn
 def make_model(args, parent=False):
     if args.dilation:
         from model import dilated
-        return MYMODEL1(args, dilated.dilated_conv)
+        return KHU4(args, dilated.dilated_conv)
     else:
-        return MYMODEL1(args)
+        return KHU4(args)
 
-class MYMODEL1(nn.Module):
+class KHU4(nn.Module):
     def __init__(self, args, conv=common.SeparableConv):
-        super(MYMODEL1, self).__init__()
+        super(KHU4, self).__init__()
 
         n_resblock = args.n_resblocks
         n_feats = args.n_feats

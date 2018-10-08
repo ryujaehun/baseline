@@ -9,6 +9,7 @@ class Model(nn.Module):
     def __init__(self, args, ckp):
         super(Model, self).__init__()
         print('Making model...')
+        self.args=args
 
         self.scale = args.scale
         self.idx_scale = 0
@@ -67,18 +68,18 @@ class Model(nn.Module):
         target = self.get_model()
         torch.save(
             target.state_dict(),
-            os.path.join(apath, 'model', 'model_latest.pth.tar')
+            os.path.join(apath, 'model', 'model_latest_x'+str(self.args.scale[0])+'.pth.tar')
         )
         if is_best:
             torch.save(
                 target.state_dict(),
-                os.path.join(apath, 'model', 'model_best.pth.tar')
+                os.path.join(apath, 'model', 'model_best_x'+str(self.args.scale[0])+'.pth.tar')
             )
 
         if self.save_models:
             torch.save(
                 target.state_dict(),
-                os.path.join(apath, 'model', 'model_{}.pth.tar'.format(epoch))
+                os.path.join(apath, 'model', 'model_{}_x'+str(self.args.scale[0])+'.pth.tar'.format(epoch))
             )
 
     def load(self, apath, pre_train='.', resume=-1, cpu=False):
@@ -90,7 +91,7 @@ class Model(nn.Module):
         if resume == -1:
             self.get_model().load_state_dict(
                 torch.load(
-                    os.path.join(apath, 'model', 'model_latest.pth.tar'),
+                    os.path.join(apath, 'model', 'model_latest_'+str(self.args.scale[0])+'.pth.tar'),
                     **kwargs
                 ),
                 strict=False
@@ -105,7 +106,7 @@ class Model(nn.Module):
         else:
             self.get_model().load_state_dict(
                 torch.load(
-                    os.path.join(apath, 'model', 'model_{}.pth.tar'.format(resume)),
+                    os.path.join(apath, 'model', 'model_{}_x'+str(self.args.scale[0])+'.pth.tar'.format(resume)),
                     **kwargs
                 ),
                 strict=False

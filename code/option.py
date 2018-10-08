@@ -31,7 +31,7 @@ parser.add_argument('--data_range', type=str, default='1-800/801-900',
                     help='train/test data range')
 parser.add_argument('--ext', type=str, default='bin',
                     help='dataset file extension')
-parser.add_argument('--scale', type=str, default='2',
+parser.add_argument('--scale','-s', type=str, default='2',
                     help='super resolution scale')
 parser.add_argument('--patch_size', type=int, default=96,
                     help='output patch size')
@@ -54,9 +54,9 @@ parser.add_argument('--pre_train', type=str, default='.',
                     help='pre-trained model directory')
 parser.add_argument('--extend', type=str, default='.',
                     help='pre-trained model directory')
-parser.add_argument('--n_resblocks', type=int, default=1,
+parser.add_argument('--n_resblocks', type=int, default=16,
                     help='number of residual blocks')
-parser.add_argument('--n_feats', type=int, default=4,
+parser.add_argument('--n_feats', type=int, default=32,
                     help='number of feature maps')
 parser.add_argument('--res_scale', type=float, default=1,
                     help='residual scaling')
@@ -87,9 +87,9 @@ parser.add_argument('--reset', action='store_true',
                     help='reset the training')
 parser.add_argument('--test_every', type=int, default=1000,
                     help='do test per every N batches')
-parser.add_argument('--epochs', type=int, default=1,
+parser.add_argument('--epochs','-e', type=int, default=40,
                     help='number of epochs to train')
-parser.add_argument('--batch_size', type=int, default=2,
+parser.add_argument('--batch_size','-b', type=int, default=64,
                     help='input batch size for training')
 parser.add_argument('--split_batch', type=int, default=1,
                     help='split the batch into smaller chunks')
@@ -101,7 +101,7 @@ parser.add_argument('--gan_k', type=int, default=1,
                     help='k value for adversarial loss')
 
 # Optimization specifications
-parser.add_argument('--lr', type=float, default=1e-4,
+parser.add_argument('--lr', type=float, default=2e-4,
                     help='learning rate')
 parser.add_argument('--lr_decay', type=int, default=200,
                     help='learning rate decay per N epochs')
@@ -124,7 +124,7 @@ parser.add_argument('--weight_decay', type=float, default=0,
                     help='weight decay')
 
 # Loss specifications
-parser.add_argument('--loss', type=str, default='1*L1',
+parser.add_argument('--loss', type=str, default='1*MSE',
 
                     help='loss function configuration')
 parser.add_argument('--skip_threshold', type=float, default='1e6',
@@ -147,6 +147,8 @@ parser.add_argument('--save_results', action='store_true',
 # model_estimate
 
 parser.add_argument('--resolution', type=str, default='HD',
+                    help='benchmark resolution')
+parser.add_argument('--recursive',  default=True,
                     help='benchmark resolution')
 
 args = parser.parse_args()

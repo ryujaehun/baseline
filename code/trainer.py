@@ -26,7 +26,7 @@ class Trainer():
 
         if self.args.load != '.':
             self.optimizer.load_state_dict(
-                torch.load(os.path.join(ckp.dir, 'optimizer.pth.tar'))
+                torch.load(os.path.join(ckp.dir, 'optimizer_x'+str(self.args.scale[0])+'.pth.tar'))
             )
             for _ in range(len(ckp.log)): self.scheduler.step()
 
