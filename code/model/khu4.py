@@ -1,30 +1,25 @@
 from model import common
-
 import torch.nn as nn
-
 def make_model(args, parent=False):
     if args.dilation:
         from model import dilated
         return KHU4(args, dilated.dilated_conv)
     else:
         return KHU4(args)
-
 class KHU4(nn.Module):
     def __init__(self, args, conv=common.SeparableConv):
         super(KHU4, self).__init__()
-
         n_resblock = args.n_resblocks
         n_feats = args.n_feats
         kernel_size = 3
         scale = args.scale[0]
-        act = nn.ReLU(True)
-
+        act = nn.PReLU(True)
         rgb_mean = (0.4488, 0.4371, 0.4040)
         rgb_std = (1.0, 1.0, 1.0)
         self.sub_mean = common.MeanShift(args.rgb_range, rgb_mean, rgb_std)
 
         # define head module
-        m_head = [common.default_conv(args.n_colors, n_feats, kernel_size)]
+        m_head = [common.default_conv(args.n_colors, n_feats, 5)]
 
         # define body module
         m_body = [
@@ -36,15 +31,14 @@ class KHU4(nn.Module):
 
         # define tail module
         m_tail = [
-            common.Upsampler(common.default_conv, scale, n_feats, act=False),
-            nn.Conv2d(
-                n_feats, args.n_colors, kernel_size,
-                padding=(kernel_size//2)
-            )
+            common.Upsampler(common.default_conv, scale, n_feats, act=False)#,
+            #nn.Conv2d(
+            #    n_feats, args.n_colors, kernel_size,
+            #    padding=(kernel_size//2)
+            #)
         ]
 
         self.add_mean = common.MeanShift(args.rgb_range, rgb_mean, rgb_std, 1)
-
         self.head = nn.Sequential(*m_head)
         self.body = nn.Sequential(*m_body)
         self.tail = nn.Sequential(*m_tail)
@@ -56,7 +50,6 @@ class KHU4(nn.Module):
         res += x
         x = self.tail(res)
         x = self.add_mean(x)
-
         return x
 
     def load_state_dict(self, state_dict, strict=True):

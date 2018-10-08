@@ -3,11 +3,17 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
 # C extensions
 *.so
 
 # Distribution / packaging
 #
+#
+Set5/
+Set14/
+B100/
+Urban100/
 DIV2K/
 .Python
 env/

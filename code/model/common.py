@@ -15,7 +15,6 @@ def default_conv(in_channels, out_channels, kernel_size, bias=True):
         in_channels, out_channels, kernel_size,
         padding=_pad, bias=bias)
 class SeparableConv(nn.Module):
-
     def __init__(self, in_channels, out_channels, kernel_size=3, bias=False, padding=1, stride=1):
         super(SeparableConv, self).__init__()
         if type(kernel_size) is type(tuple()):
